@@ -3,7 +3,12 @@
 // Description: Module 8 - Queues 
 
 #include <iostream>
+#include <string>
+#include <ctime>
+#include <cstdlib>
+#include <cctype>
 #include "input.h"
+#include "CostcoSimulation.h"
 
 using namespace std;
 
@@ -13,6 +18,7 @@ char menuOption();
 
 int main()
 {
+    srand(static_cast<unsigned int>(time(0)));
     bool running = true;
     char option;
 
@@ -39,9 +45,28 @@ int main()
         }
         case '3':
         {
+            system("cls");
+
+            cout << "\n\t3> Simulation of checkout lines at a CostCo warehouse store\n";
+            cout << "\t" << string(75, char(196)) << "\n";
+
+            // Prompt for the operating time
+            unsigned int totalTime = inputInteger("\n\tEnter the time (0..37800 in seconds) of the store will be operated:", 0, 37800);
+
+            // Prompt for the number of cash registers
+            int numRegisters = inputInteger("\n\tEnter the number of cash registers (1...10): ", 1, 10);
+            
+
+            // Create the Costco simulation
+            CostcoSimulation<int> costco(totalTime, numRegisters);
+
+            // Run the simulation
+            costco.simulate();
+
 
             cout << "\n\n";
             system("pause");
+
             break;
         }
         case '0':
