@@ -2,6 +2,7 @@
 // Date: 10/24/2026
 // Description: Module 8 - Queues 
 
+#define NOMINMAX
 #include <iostream>
 #include <string>
 #include <ctime>
@@ -10,9 +11,9 @@
 #include <queue>
 #include <vector>
 #include "input.h"
-#include "CostcoSimulation.h"
-#include "Patient.h"
 #include "CardGame.h"
+#include "Patient.h"
+#include "CostcoSimulation.h"
 using namespace std;
 
 //function prototypes
