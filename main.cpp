@@ -12,6 +12,7 @@
 #include "input.h"
 #include "CostcoSimulation.h"
 #include "Patient.h"
+#include "CardGame.h"
 using namespace std;
 
 //function prototypes
@@ -33,6 +34,12 @@ int main()
         {
         case '1':
         {
+            system("cls");
+            cout << "\n\t1> Simulation of War (card game) using deque STL\n";
+
+            int cardsPerSuite = inputInteger("\n\tEnter a number of cards per suite: ", 1, 13);
+            CardGame war(cardsPerSuite);
+            war.play();
 
             cout << "\n\n";
             system("pause");
@@ -57,7 +64,7 @@ int main()
 
             // Prompt for the number of cash registers
             int numRegisters = inputInteger("\n\tEnter the number of cash registers (1...10): ", 1, 10);
-            
+
 
             // Create the Costco simulation
             CostcoSimulation<int> costco(totalTime, numRegisters);
@@ -153,7 +160,7 @@ void option2()
                     throw "\n\tERROR: The lobby is empty.";
                 }
 
-                
+
                 cout << "\n\t" << lobby.top().getName();
                 switch (lobby.top().getPriority())
                 {
@@ -202,7 +209,7 @@ void option2()
             {
                 cout << msg << "\n";
             }
-            
+
             cout << "\n\n";
             system("pause");
             break;
@@ -218,7 +225,7 @@ void option2()
 
                 for (int i = 0; i < transferredPatients.size(); i++)
                 {
-                    cout << "\n\t" << i+1 << " - " << transferredPatients.at(i);
+                    cout << "\n\t" << i + 1 << " - " << transferredPatients.at(i);
                 }
             }
             catch (const char* msg)
