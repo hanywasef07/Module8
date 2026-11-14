@@ -60,8 +60,7 @@ public:
 // Default constructor initializes the simulation with 0 seconds and 1 cash register.
 template <class T>
 CostcoSimulation<T>::CostcoSimulation() : CostcoSimulation(0, 1)
-{
-}
+{}
 
 // Precondition: time is between 0 and 37800,
 // and numRegisters is between 1 and 10.
