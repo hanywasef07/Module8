@@ -26,7 +26,7 @@ public:
 
 	void setCheckedInTime(unsigned int t)
 	{
-		this->checkedInTime= t;
+		this->checkedInTime = t;
 	}
 
 	unsigned int getCheckedInTime() const
@@ -88,7 +88,7 @@ string Patient::ER_description[5] = { "Stable, with no resources anticipated or 
 
 ostream& operator <<(ostream& outs, const Patient& obj)
 {
-	outs << "ER level: " << obj.getPriority() << " - " << obj.ER_description[obj.getPriority()-1] << '\n';
+	outs << "ER level: " << obj.getPriority() << " - " << obj.ER_description[obj.getPriority() - 1] << '\n';
 	outs << "\t\t\tChecked-In time: " << obj.getCheckedInTime() << '\n';
 	outs << "\t\t\tPatient's name: " << obj.getName() << '\n';
 	outs << "\t\t\tPatient's age: " << obj.getAge() << '\n';
