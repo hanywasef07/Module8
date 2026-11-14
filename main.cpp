@@ -2,6 +2,7 @@
 // Date: 10/24/2026
 // Description: Module 8 - Queues 
 
+#define NOMINMAX
 #include <iostream>
 #include <string>
 #include <ctime>
@@ -10,8 +11,10 @@
 #include <queue>
 #include <vector>
 #include "input.h"
-#include "CostcoSimulation.h"
+#include "CardGame.h"
 #include "Patient.h"
+#include "CostcoSimulation.h"
+#include "Hospital.h"
 using namespace std;
 
 //function prototypes
@@ -33,6 +36,13 @@ int main()
         {
         case '1':
         {
+            system("cls");
+            cout << "\n\t1> Simulation of War (card game) using deque STL\n";
+
+            int cardsPerSuite = inputInteger("\n\tEnter a number of cards per suite: ", 1, 13);
+            CardGame war(cardsPerSuite);
+            war.play();
+
 
             cout << "\n\n";
             system("pause");
@@ -53,11 +63,11 @@ int main()
             cout << "\t" << string(75, char(196)) << "\n";
 
             // Prompt for the operating time
-            unsigned int totalTime = inputInteger("\n\tEnter the time (0..37800 in seconds) of the store will be operated:", 0, 37800);
+            unsigned int totalTime = inputInteger("\n\tEnter the time (0..37800 in seconds) of the store will be operated: ", 0, 37800);
 
             // Prompt for the number of cash registers
             int numRegisters = inputInteger("\n\tEnter the number of cash registers (1...10): ", 1, 10);
-            
+
 
             // Create the Costco simulation
             CostcoSimulation<int> costco(totalTime, numRegisters);
@@ -102,8 +112,7 @@ char menuOption()
 
 void option2()
 {
-    priority_queue<Patient> lobby;
-    vector<Patient> transferredPatients;
+    Hospital hospital;
     char option;
     do
     {
@@ -125,14 +134,9 @@ void option2()
         {
         case 'A':
         {
-            Patient newPatient;
-            newPatient.setName(inputString("\n\tEnter the patient's name: ", true));
-            newPatient.setAge(inputInteger("\n\tEnter the patient's age: ", true));
-            newPatient.setGender(inputChar("\n\tEnter the patient's gender (F-Female or M-Male): ", "FM"));
-            cout << "\n\tFrom 1-5: \n\t1>Non-urgent \n\t2>Less Urgent \n\t3>Urgent \n\t4>Emergent \n\t5>Resuscitation";
-            newPatient.setPriority(inputInteger("\n\tEnter the ER level: ", 1, 5));
-            lobby.push(newPatient);
-            cout << "\n\tPatient information has been registered.";
+            //implement function here
+            hospital.registerPatient();
+            cout << "\n\n";
             system("pause");
             break;
         }
@@ -145,87 +149,14 @@ void option2()
             4 - "name - transfers to surgery room..."
             5 - "name - transfers to ICU..."
             */
-            try
-            {
-                //validation empty lobby - queue
-                if (lobby.empty())
-                {
-                    throw "\n\tERROR: The lobby is empty.";
-                }
-
-                
-                cout << "\n\t" << lobby.top().getName();
-                switch (lobby.top().getPriority())
-                {
-                case 1:
-                {
-                    cout << " - examines and gives prescription....";
-                    transferredPatients.push_back(lobby.top());
-                    lobby.pop();
-                }
-                break;
-                case 2:
-                {
-                    cout << " - transfers to x-ray lab....";
-                    transferredPatients.push_back(lobby.top());
-                    lobby.pop();
-                }
-                break;
-                case 3:
-                {
-                    cout << " - transfers to emergency room....";
-                    transferredPatients.push_back(lobby.top());
-                    lobby.pop();
-                }
-                break;
-                case 4:
-                {
-                    cout << " - transfers to surgery room....";
-                    transferredPatients.push_back(lobby.top());
-                    lobby.pop();
-                }
-                break;
-                case 5:
-                {
-                    cout << " - transfers to ICU....";
-                    transferredPatients.push_back(lobby.top());
-                    lobby.pop();
-                }
-                break;
-                default:
-                {
-                    cout << "\n\tERROR: Invalid priority!\n";
-                }
-                }
-            }
-            catch (const char* msg)
-            {
-                cout << msg << "\n";
-            }
-            
+            hospital.transferPatient();
             cout << "\n\n";
             system("pause");
             break;
         }
         case 'C':
         {
-            try
-            {
-                if (transferredPatients.empty())
-                {
-                    throw "\n\tERROR: No patient transferred.";
-                }
-
-                for (int i = 0; i < transferredPatients.size(); i++)
-                {
-                    cout << "\n\t" << i+1 << " - " << transferredPatients.at(i);
-                }
-            }
-            catch (const char* msg)
-            {
-                cout << msg << "\n";
-            }
-
+            hospital.displayTransferredPatients();
             cout << "\n\n";
             system("pause");
             break;
