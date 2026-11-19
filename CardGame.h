@@ -12,8 +12,8 @@ private:
 	int cardsPerSuite;
 	deque<int> player1;
 	deque<int> player2;
-	deque<int> player1Won;
-	deque<int> player2Won;
+	//deque<int> player1Won;
+	//deque<int> player2Won;
 
 	// Precondition: cardsPerSuite is from 1 to 13
 	// Postcondition: each player receives half of a shuffled 4-suite deck
@@ -21,8 +21,8 @@ private:
 	{
 		player1.clear();
 		player2.clear();
-		player1Won.clear();
-		player2Won.clear();
+		//player1Won.clear();
+		//player2Won.clear();
 
 		vector<int> deck;
 		for (int suite = 0; suite < 4; suite++)
@@ -79,7 +79,8 @@ public:
 	}
 
 	// Precondition: both players have been dealt cards
-	// Postcondition: the war is played until a player cannot continue, then the winner is displayed
+	// Postcondition: all available rounds are played. Won cards collected by respective players. If final tie cannot be resolved (both exhausted cards), those card remains on the table. Winner will be determined by the number of cards owned.
+	/*
 	void play()
 	{
 		deque<int> table;
@@ -162,7 +163,6 @@ public:
 		//Thanh added something here
 		int unresolvedCardTBK = static_cast<int>(table.size());
 		//For debug
-		/*
 		
 		int totalCards = 4 * cardsPerSuite;
 
@@ -180,7 +180,6 @@ public:
 		cout << "\n\tCards still on table: " << table.size();
 		cout << "\n\tPlayer 1 total: " << p1Total;
 		cout << "\n\tPlayer 2 total: " << p2Total;
-		*/
 
 		cout << "\n";
 		if (unresolvedCardTBK > 0)
@@ -195,4 +194,115 @@ public:
 		else
 			cout << "\t\tThe war ends in a tie with " << p1Total << " cards each.\n";
 	}
+	*/
+void play()
+{
+	deque<int> table;
+	bool inTieBreaker = false;
+
+	while (!player1.empty() && !player2.empty())
+	{
+		int card1 = player1.front();
+		player1.pop_front();
+		int card2 = player2.front();
+		player2.pop_front();
+
+		// Smaller card first, larger card second
+		table.push_back(min(card1, card2));
+		table.push_back(max(card1, card2));
+
+		cout << "\n\t\tPlayer1:  " << card1 << "\tPlayer2:  " << card2 << " -> ";
+
+		if (card1 > card2)
+		{
+			if (inTieBreaker)
+				cout << "Player1 wins tie breaker!";
+			else
+				cout << "Player1 wins!";
+
+			awardTable(player1, table);
+			inTieBreaker = false;
+			cout << "\n";
+			waitForEnter();
+		}
+		else if (card2 > card1)
+		{
+			if (inTieBreaker)
+				cout << "Player2 wins tie breaker!";
+			else
+				cout << "Player2 wins!";
+
+			awardTable(player2, table);
+			inTieBreaker = false;
+			cout << "\n";
+			waitForEnter();
+		}
+		else
+		{
+			cout << "Tie breaker begins!";
+			inTieBreaker = true;
+
+			//Thanh modified here
+			if (player1.empty() && player2.empty())
+			{
+				cout << "\n\t\tBoth players have no more cards.";
+				cout << "\n\t\tTie breaker remains unresolved.";
+				cout << "\n\t\tCards remain on the table.\n";
+
+				waitForEnter();
+				break;
+			}
+			else if (player1.empty())
+			{
+				cout << "\n\t\tPlayer2 takes all because Player1 has no more card.\n";
+				awardTable(player2, table);
+				waitForEnter();
+				break;
+			}
+			else if (player2.empty())
+			{
+				cout << "\n\t\tPlayer1 takes all because Player2 has no more card.\n";
+				awardTable(player1, table);
+				waitForEnter();
+				break;
+			}
+
+			cout << "\n";
+			waitForEnter();
+		}
+	}
+
+	int p1Total = static_cast<int>(player1.size());
+	int p2Total = static_cast<int>(player2.size());
+
+	//Thanh added something here
+	int unresolvedCardTBK = static_cast<int>(table.size());
+	//For debug
+
+	int totalCards = 4 * cardsPerSuite;
+
+	
+	int accountedCards = p1Total + p2Total + unresolvedCardTBK;
+
+			
+	cout << "\n\tExpected cards: " << totalCards;
+	cout << "\n\tAccounted cards: " << accountedCards;
+	cout << "\n\tCards still on table: " << table.size();
+	cout << "\n\tPlayer 1 total: " << p1Total;
+	cout << "\n\tPlayer 2 total: " << p2Total;
+
+	cout << "\n";
+	if (unresolvedCardTBK > 0)
+	{
+		cout << "\t\tUnresolved cards remaining on the table: " << unresolvedCardTBK << ".\n";
+	}
+
+	if (p1Total > p2Total)
+		cout << "\t\tPlayer1 wins the war with most number of cards (" << p1Total << ").\n";
+	else if (p2Total > p1Total)
+		cout << "\t\tPlayer2 wins the war with most number of cards (" << p2Total << ").\n";
+	else
+		cout << "\t\tThe war ends in a tie with " << p1Total << " cards each.\n";
+}
+
 };
