@@ -18,6 +18,8 @@ public:
 	void displayTransferredPatients() const;
 };
 
+//Precondition: Valid patient input for name, age, gender, priority level
+//Postcondition: Valid patient input will be added to the priority queue
 inline void Hospital::registerPatient()
 {
 	Patient newPatient;
@@ -31,6 +33,8 @@ inline void Hospital::registerPatient()
 	cout << "\n\tPatient information has been registered.";
 }
 
+//Precondition: Lobby shouldn't be empty
+//Postcondition: Highest-priority patient transferred and added to the transferredPatients record. If the lobby is empty, no patient is transferred.
 inline void Hospital::transferPatient()
 {
     if (lobby.empty())
@@ -71,6 +75,8 @@ inline void Hospital::transferPatient()
     lobby.pop();
 }
 
+//Precondition: None
+//Postcondition: Based on the transferredPatients, display the list or display the message when the list is empty
 inline void Hospital::displayTransferredPatients() const
 {
     if (transferredPatients.empty())
