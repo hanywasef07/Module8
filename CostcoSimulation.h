@@ -165,7 +165,9 @@ void CostcoSimulation<T>::processCheckout()
 			if (checkoutTime[i] == 0)
 			{
 				const unsigned int items = static_cast<unsigned int>(registers[i].front());
-				checkoutTime[i] = max(ONE, items / FIVE); // Each item takes 0.2 seconds
+				//checkoutTime[i] = max(ONE, items / FIVE); // Each item takes 0.2 seconds
+				//The formula above is wrong, it will round down the amount of time 1.6 => 1
+				checkoutTime[i] = max(ONE, (items + FIVE - 1) / FIVE);
 			}
 
 			--checkoutTime[i];
@@ -228,8 +230,12 @@ void CostcoSimulation<T>::simulate()
 	const int FIFTY = 50;
 
 	// Generate the initial customer
-	const T customer = static_cast<T>(std::rand() % FIFTY + ONE);
-	addCustomer(customer);
+	//Thanh added something here, only generate a customer when time > 0, if = 0 shouldn't create a customer
+	if (totalTime > 0)
+	{
+		const T customer = static_cast<T>(std::rand() % FIFTY + ONE);
+		addCustomer(customer);
+	}
 
 	for (unsigned int t = 0; t < totalTime; ++t)
 	{
