@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include <iostream>
+#include <ctime>
 using namespace std;
 
 class Patient
@@ -19,7 +20,8 @@ public:
 	//Postcondition: Create a patient object
 	Patient()
 	{
-		checkedInTime;
+		checkedInTime = 0;
+		admittedTime = 0;
 		priority = 0;
 		name = "unknown";
 		age = 0;
@@ -105,6 +107,8 @@ public:
 //Postcondition: Returns true if P1 has lower priority than P2
 bool operator <(const Patient& P1, const Patient& P2)
 {
+	if (P1.priority == P2.priority)
+		return P1.checkedInTime > P2.checkedInTime; // same level: whoever checked in first goes first
 	return P1.priority < P2.priority;
 }
 
@@ -115,7 +119,10 @@ string Patient::ER_description[5] = { "Stable, with no resources anticipated or 
 ostream& operator <<(ostream& outs, const Patient& obj)
 {
 	outs << "ER level: " << obj.getPriority() << " - " << obj.ER_description[obj.getPriority() - 1] << '\n';
-	outs << "\t\t\tChecked-In time: " << obj.getCheckedInTime() << '\n';
+	time_t checkedIn = obj.getCheckedInTime();
+	char timeText[26];
+	ctime_s(timeText, sizeof(timeText), &checkedIn);
+	outs << "\t\t\tChecked-In time: " << timeText;   // timeText already ends with a new line
 	outs << "\t\t\tPatient's name: " << obj.getName() << '\n';
 	outs << "\t\t\tPatient's age: " << obj.getAge() << '\n';
 	outs << "\t\t\tPatient's gender: " << obj.getGender() << '\n';
