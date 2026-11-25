@@ -10,27 +10,27 @@
 class Hospital
 {
 private:
-	priority_queue<Patient> lobby;
-	vector<Patient> transferredPatients;
+    priority_queue<Patient> lobby;
+    vector<Patient> transferredPatients;
 public:
-	void registerPatient();
-	void transferPatient();
-	void displayTransferredPatients() const;
+    void registerPatient();
+    void transferPatient();
+    void displayTransferredPatients() const;
 };
 
 //Precondition: Valid patient input for name, age, gender, priority level
 //Postcondition: Valid patient input will be added to the priority queue
 inline void Hospital::registerPatient()
 {
-	Patient newPatient;
-	newPatient.setName(inputString("\n\tEnter the patient's name: ", true));
-	newPatient.setAge(inputInteger("\n\tEnter the patient's age: ", 1, 100));
-	newPatient.setGender(inputChar("\n\tEnter the patient's gender (F-Female or M-Male): ", static_cast<string>("FM")));
-	cout << "\n\tFrom 1-5: \n\t1>Non-urgent \n\t2>Less Urgent \n\t3>Urgent \n\t4>Emergent \n\t5>Resuscitation";
-	newPatient.setPriority(inputInteger("\n\tEnter the ER level: ", 1, 5));
-	newPatient.setCheckedInTime(static_cast<unsigned int>(time(nullptr)));
-	lobby.push(newPatient);
-	cout << "\n\tPatient information has been registered.";
+    Patient newPatient;
+    newPatient.setName(inputString("\n\tEnter the patient's name: ", true));
+    newPatient.setAge(inputInteger("\n\tEnter the patient's age: ", 1, 100));
+    newPatient.setGender(inputChar("\n\tEnter the patient's gender (F-Female or M-Male): ", static_cast<string>("FM")));
+    cout << "\n\tFrom 1-5: \n\t1>Non-urgent \n\t2>Less Urgent \n\t3>Urgent \n\t4>Emergent \n\t5>Resuscitation";
+    newPatient.setPriority(inputInteger("\n\tEnter the ER level: ", 1, 5));
+    newPatient.setCheckedInTime(static_cast<unsigned int>(time(nullptr)));
+    lobby.push(newPatient);
+    cout << "\n\tPatient information has been registered.";
 }
 
 //Precondition: Lobby shouldn't be empty
