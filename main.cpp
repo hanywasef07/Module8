@@ -3,6 +3,7 @@
 // Description: Module 8 - Queues 
 
 #define NOMINMAX
+#include <windows.h>
 #include <iostream>
 #include <string>
 #include <ctime>
@@ -106,13 +107,13 @@ char menuOption()
     cout << "\n\t\t  0 > Exit\n";
     cout << "\t\t" << string(100, char(205));
 
-    char option = toupper(inputChar("\n\t\t  option: ", static_cast<string>("1,2,3,0")));
+    char option = toupper(inputChar("\n\t\t  option: ", static_cast<string>("1230")));
     return option;
 }
 
 void option2()
 {
-    Hospital hospital;
+    static Hospital hospital;   // static: keeps the patients when you go back to the main menu
     char option;
     do
     {
@@ -169,6 +170,6 @@ void option2()
             system("pause");
             break;
         }
-    } while (option != 0);
+    } while (option != '0');
 
 }
