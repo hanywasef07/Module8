@@ -11,7 +11,7 @@
 
 using namespace std;
 
-template <class T>
+template <class T> // Template class for simulating a Costco warehouse store checkout process
 class CostcoSimulation
 {
 private:
@@ -22,7 +22,6 @@ private:
 	size_t totalCustomers; // Total number of customers that have been added to the store
 	vector<queue<T>> registers; // Vector of queues representing cash registers
 	vector<unsigned int> checkoutTime;    // Remaining checkout time for each register
-
 	//helper functions
 	size_t findShortestQueue() const; // Find the index of the shortest queue (cash register)
 
@@ -30,24 +29,16 @@ public:
 	// Constructor
 	CostcoSimulation();
 	CostcoSimulation(unsigned int time, size_t numRegisters);
-
-
-
 	// Add a customer to the shortest queue
 	void addCustomer(const T& customer);
-
 	// Generate random customers
 	void generateCustomers();
-
 	// Process customers at each register
 	void processCheckout();
-
 	// Display all cash registers
 	void displayRegisters() const;
-
 	// Run the simulation
 	void simulate();
-
 	// Getters
 	unsigned int getTotalTime() const; // Get the total operating time of the store
 	unsigned int getRemainingTime() const; // Get the remaining time in the simulation
@@ -94,7 +85,8 @@ CostcoSimulation<T>::CostcoSimulation(unsigned int time, size_t numRegisters)
 }
 
 // Precondition: There is at least one cash register.
-// Postcondition: Returns the index of the cash register with the shortest queue.
+// Postcondition: Returns the index of the register with the fewest
+// customers. If queue sizes are equal, selects the queue with fewer items.
 template <class T>
 size_t CostcoSimulation<T>::findShortestQueue() const
 {
@@ -108,10 +100,46 @@ size_t CostcoSimulation<T>::findShortestQueue() const
 
 	for (size_t i = 1; i < numRegisters; ++i)
 	{
-		if (registers[i].size() < shortestSize)
+		size_t currentSize = registers[i].size();
+
+		// First priority: number of customers
+		if (currentSize < shortestSize)
 		{
-			shortestSize = registers[i].size();
+			shortestSize = currentSize;
 			shortestIndex = i;
+		}
+
+		// Second priority: total number of items
+		else if (currentSize == shortestSize)
+		{
+			unsigned int shortestItems = 0;
+			unsigned int currentItems = 0;
+
+			// Copy both queues without modifying the originals
+			queue<T> shortestQueue = registers[shortestIndex];
+			queue<T> currentQueue = registers[i];
+
+			// Calculate total items in the shortest queue
+			while (!shortestQueue.empty())
+			{
+				shortestItems += static_cast<unsigned int>(shortestQueue.front());
+
+				shortestQueue.pop();
+			}
+
+			// Calculate total items in the current queue
+			while (!currentQueue.empty())
+			{
+				currentItems += static_cast<unsigned int>(currentQueue.front());
+
+				currentQueue.pop();
+			}
+
+			// Select the queue with fewer items
+			if (currentItems < shortestItems)
+			{
+				shortestIndex = i;
+			}
 		}
 	}
 
